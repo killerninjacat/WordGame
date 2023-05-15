@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="160dp"
+        android:layout_height="155dp"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/yellowline"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="102dp"
+        android:layout_height="93dp"
+        android:layout_marginTop="25dp"
+
+        android:rotation="16"
+        android:src="@drawable/crown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:fontFamily="@font/oleo_script_bold"
+        android:lineSpacingExtra="2dp"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="20"
+        android:text="WORD\nJUMBLE"
+        android:textAlignment="center"
+        android:textColor="#7DF9FF"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textword"
+        android:layout_width="175dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="-10dp"
+        android:background="@drawable/wordclue"
+        android:gravity="center"
+        android:text="WORD"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/inputWord"
+        app:layout_constraintStart_toStartOf="@+id/inputWord" />
+
+    <TextView
+        android:id="@+id/textclue"
+        android:layout_width="175dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="-10dp"
+        android:background="@drawable/wordclue"
+        android:gravity="center"
+        android:text="CLUE"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/inputPrompt"
+        app:layout_constraintStart_toStartOf="@+id/inputPrompt" />
+
+    <EditText
+        android:id="@+id/inputWord"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="350dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/textboxbg"
+        android:clickable="true"
+        android:contentDescription="Enter a word"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:hint="eg. Chair"
+        android:inputType="text"
+        android:padding="10dp"
+        android:text=""
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/inputPrompt"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="350dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/textboxbg"
+        android:clickable="true"
+        android:contentDescription="Enter a description of your word"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:hint="eg. Something you sit on"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <Button
+        android:id="@+id/startGame"
+        android:layout_width="164dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="470dp"
+        android:layout_marginBottom="95dp"
+        android:background="@drawable/roundedcorner"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Start"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/inputPrompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="160dp"
+        android:layout_height="155dp"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/yellowline"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/hiscore"
+        android:layout_width="250dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/highscore"
+        android:shadowColor="#FF0000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="4"
+        android:text="hi"
+        android:textAlignment="center"
+        android:textColor="#393939"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
