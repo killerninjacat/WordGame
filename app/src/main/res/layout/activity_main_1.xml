@@ -236,7 +236,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="35dp"
-        android:background="@drawable/yellowheart"
+        android:background="@drawable/redheart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -246,7 +246,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="35dp"
-        android:background="@drawable/yellowheart"
+        android:background="@drawable/redheart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -256,20 +256,36 @@
         android:layout_height="50dp"
         android:layout_marginStart="130dp"
         android:layout_marginTop="35dp"
-        android:background="@drawable/yellowheart"
+        android:background="@drawable/redheart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/clueinfo"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="100dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="110dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/i"
         android:backgroundTint="#7DF9FF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/life1"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/actualtimer"
+        android:layout_width="148dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/textboxbg"
+        android:fontFamily="@font/acme"
+        android:text="hi"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/answer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -163,7 +163,7 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="4"
-        android:text=" HIGHSCORE: 1500 "
+        android:text="hi"
         android:textAlignment="center"
         android:textColor="#393939"
         android:textSize="26sp"

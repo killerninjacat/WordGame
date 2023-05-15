@@ -3,40 +3,65 @@ package com.example.wordgame;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity3 extends AppCompatActivity {
     Button button1;    Button button2;    Button button3;    Button button4;    Button button5;    Button button6;    Button button7;    Button button8;    Button button9;    Button button10;    Button button11;    Button button12;    Button button13;Button button14;Button button15;Button button16;
-    TextView answer;TextView enterclue;
+    TextView answer,actualtimer;TextView enterclue;
     Vibrator vib;
     Button clueinfo,check,life1,life2,life3,reset,ok,homebutton,playagain;
     String prmpt;
     String wd;String answ1="";
     int chk1=0,chk2=0,chk3=0,chk4=0,chk5=0,chk6=0,chk7=0,chk8=0,chk9=0,chk10=0,chk11=0,chk12=0,chk13=0,chk14=0,chk15=0,chk16=0;
     char ch[]=new char[16];static int tmp;
-    int k=0,l=0,m=0,d=0;
+    int k=0,l=0,m=0,d=0,md,timesec,sz=0;
     int score=1500;int scr;
+    public void Updatescore() {
+        Log.d("insidemethod", "Value: " + Integer.toString(score));
+        SharedPreferences settings = getApplicationContext().getSharedPreferences("com.example.wordgame", 0);
+        int bestscore = settings.getInt("scoreget", 0);
+        if (score > bestscore) {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("scoreget", score);
+            editor.commit();
+        }
+    }
+    public void Timerset(int s,final TextView actualtime){
+
+        new CountDownTimer(s* 1000+1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                int minutes = seconds / 60;
+                seconds = seconds % 60;
+                actualtime.setText("TIME : " + minutes
+                        + ":" + seconds);
+            }
+
+            public void onFinish() {
+                actualtime.setText("Time's Up!");
+                score=0;
+                sz=1;
+                Toast.makeText(MainActivity3.this, "Time's Up!", Toast.LENGTH_SHORT).show();
+                gameoverdialog();
+            }
+        }.start();
+    }
     public void cluedialog(){
         final Dialog dialog = new Dialog(MainActivity3.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -65,7 +90,6 @@ public class MainActivity3 extends AppCompatActivity {
         TextView txt = dialog.findViewById(R.id.displayscore);
         final MediaPlayer plyagn=MediaPlayer.create(this, R.raw.playagain);
         final MediaPlayer hme=MediaPlayer.create(this, R.raw.home);
-        Button btn = dialog.findViewById(R.id.ok);
         Button homebutton=dialog.findViewById(R.id.homebutton);
         Button playagain=dialog.findViewById(R.id.playagain);
         txt.setText("Your Score: "+score);
@@ -91,9 +115,9 @@ public class MainActivity3 extends AppCompatActivity {
                 button16.setBackgroundResource(R.drawable.unclicked);
                 l=0;m=1;
                 score=1500;
-                life1.setBackgroundResource(R.drawable.yellowheart);
-                life2.setBackgroundResource(R.drawable.yellowheart);
-                life3.setBackgroundResource(R.drawable.yellowheart);
+                life1.setBackgroundResource(R.drawable.redheart);
+                life2.setBackgroundResource(R.drawable.redheart);
+                life3.setBackgroundResource(R.drawable.redheart);
                 startActivity(getIntent());
                 finish();
                 overridePendingTransition(0, 0);
@@ -115,10 +139,26 @@ public class MainActivity3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_1);
+        this.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         ch=getIntent().getCharArrayExtra("str1");
         wd=getIntent().getStringExtra("str2");
         prmpt=getIntent().getStringExtra("str3");
+        md=getIntent().getIntExtra("int1",0);
+        timesec=getIntent().getIntExtra("int2",0);
+        actualtimer=(TextView) findViewById(R.id.actualtimer);
+        if(md==1)
+            Timerset(timesec,actualtimer);
+        else
+            actualtimer.setVisibility(View.INVISIBLE);
         vib=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         final MediaPlayer ltrclk=MediaPlayer.create(this, R.raw.notif);
         final MediaPlayer rst=MediaPlayer.create(this, R.raw.resetsound);
@@ -458,13 +498,16 @@ public class MainActivity3 extends AppCompatActivity {
                 if(ans[wd.length()-1].compareTo(" _ ")!=0) {
                     if (answ1.equalsIgnoreCase(wd)&&l<3) {
                         win.start();
+                        Log.d("ADebugTag", "Value: " + Integer.toString(score));
+                        Updatescore();
                         Toast.makeText(MainActivity3.this, "Correct Answer!", Toast.LENGTH_SHORT).show();
                         gameoverdialog();
                     } else if (l == 0) {
                         score-=500;
                         scr=score;
+                        Log.d("ADebugTag", "Value: " + Integer.toString(score));
                         wrng.start();
-                        life1.setBackgroundResource(R.drawable.greenheart);
+                        life1.setBackgroundResource(R.drawable.yellowheart);
                         Toast.makeText(MainActivity3.this, "Wrong Answer!", Toast.LENGTH_SHORT).show();
                         l++;
                         button1.setBackgroundResource(R.drawable.unclicked);
@@ -517,8 +560,9 @@ public class MainActivity3 extends AppCompatActivity {
                     } else if (l == 1) {
                         score-=500;
                         scr=score;
+                        Log.d("ADebugTag", "Value: " + Integer.toString(score));
                         wrng.start();
-                        life2.setBackgroundResource(R.drawable.greenheart);
+                        life2.setBackgroundResource(R.drawable.yellowheart);
                         Toast.makeText(MainActivity3.this, "Wrong Answer!", Toast.LENGTH_SHORT).show();
                         l++;
                         button1.setBackgroundResource(R.drawable.unclicked);
@@ -571,9 +615,11 @@ public class MainActivity3 extends AppCompatActivity {
                     } else {
                         score-=500;
                         scr=score;
-                        life3.setBackgroundResource(R.drawable.greenheart);
+                        Log.d("ADebugTag", "Value: " + Integer.toString(score));
+                        life3.setBackgroundResource(R.drawable.yellowheart);
                         Toast.makeText(MainActivity3.this, "Wrong Answer!", Toast.LENGTH_SHORT).show();
                         l++;
+                        Updatescore();
                         gover.start();
                         gameoverdialog();
                     }
@@ -636,15 +682,9 @@ public class MainActivity3 extends AppCompatActivity {
                     k = 0;answ1="";
                 }
             });
+        Log.d("outerscoretag", "Value: " + Integer.toString(score));
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences("com.example.wordgame", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        int bestscore = settings.getInt("scoreget", 0);
-        if(score>bestscore) {
-            editor.putInt("scoreget", score);
-            editor.apply();
+
         }
     }
 
-
-}
