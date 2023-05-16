@@ -7,4 +7,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="gradstartlt">#F486D5</color>
+    <color name="gradendlt">#8F42E1</color>
+    <color name="gradstartdk">#D264B3</color>
+    <color name="gradenddk">#6D20C0</color>
 </resources>
