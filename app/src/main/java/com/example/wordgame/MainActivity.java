@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     char ch[]=new char[16];
@@ -122,36 +123,30 @@ public class MainActivity extends AppCompatActivity {
         startGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Modeselector();
-                prmpt=inputPrompt.getText().toString();
-                wd=inputWord.getText().toString();
-                vibr.vibrate(200);
-                int index;char temp;
-                Random random = new Random();
-                for(int i=0;i<wd.length();i++)
-                    ch[i]=wd.charAt(i);
-                for(int i=wd.length();i<16;i++)
-                {
-                    ch[i] = (char) ('A' + random.nextInt(26));
+                prmpt = inputPrompt.getText().toString();
+                wd = inputWord.getText().toString();
+                if (wd.length() != 0 && wd.length() <= 16) {
+                    Modeselector();
+                    vibr.vibrate(200);
+                    int index;
+                    char temp;
+                    Random random = new Random();
+                    for (int i = 0; i < wd.length(); i++)
+                        ch[i] = wd.charAt(i);
+                    for (int i = wd.length(); i < 16; i++) {
+                        ch[i] = (char) ('A' + random.nextInt(26));
+                    }
+                    for (int i = ch.length - 1; i > 0; i--) {
+                        index = random.nextInt(i + 1);
+                        temp = ch[index];
+                        ch[index] = ch[i];
+                        ch[i] = temp;
+                    }
                 }
-                for (int i = ch.length - 1; i > 0; i--)
-                {
-                    index = random.nextInt(i + 1);
-                    temp = ch[index];
-                    ch[index] = ch[i];
-                    ch[i] = temp;
-                }
-                /*Bundle bundle=new Bundle();
-                bundle.putCharArray("str1",ch);
-                bundle.putString("str2",wd);
-                bundle.putString("str3",prmpt);
-                bundle.putInt("int1",md);
-                Intent i=new Intent(MainActivity.this,MainActivity3.class);
-                i.putExtra("str1",ch);
-                i.putExtra("str2",wd);
-                i.putExtra("str3",prmpt);
-                i.putExtra("int1",md);
-                startActivity(i);*/
+                else if(wd.length()==0)
+                    Toast.makeText(MainActivity.this, "Enter a Word", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(MainActivity.this, "Enter a maximum of 16 letters", Toast.LENGTH_SHORT).show();
             }
         });
 
