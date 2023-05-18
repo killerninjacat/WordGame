@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,14 +24,31 @@ import java.util.Random;
 public class MainActivity3 extends AppCompatActivity {
     Button button1;    Button button2;    Button button3;    Button button4;    Button button5;    Button button6;    Button button7;    Button button8;    Button button9;    Button button10;    Button button11;    Button button12;    Button button13;Button button14;Button button15;Button button16;
     TextView answer,actualtimer;TextView enterclue;
+    ProgressBar loadprog;
+    long tl;
     Vibrator vib;
     Button clueinfo,check,life1,life2,life3,reset,ok,homebutton,playagain;
-    String prmpt;
+    String prmpt,answfin;
     String wd;String answ1="";
     int chk1=0,chk2=0,chk3=0,chk4=0,chk5=0,chk6=0,chk7=0,chk8=0,chk9=0,chk10=0,chk11=0,chk12=0,chk13=0,chk14=0,chk15=0,chk16=0;
     char ch[]=new char[16];static int tmp;
-    int k=0,l=0,m=0,d=0,md,timesec,sz=0;
+    int k=0,l=0,m=0,d=0,md,sz=0,jk=0,sd=0,nb=0,az=1;long timesec,tms;
     int score=1500;int scr;
+    CountDownTimer tim;
+    String ansfin[];
+    public void Arraycpy(String s[])
+    {
+        ansfin=s.clone();
+    }
+    public void Sendans(String s)
+    {
+        answfin=s;
+    }
+    public void Fintim(long n)
+    {
+        if(n==0)
+            az=1;
+    }
     public void Updatescore() {
         Log.d("insidemethod", "Value: " + Integer.toString(score));
         SharedPreferences settings = getApplicationContext().getSharedPreferences("com.example.wordgame", 0);
@@ -41,24 +59,31 @@ public class MainActivity3 extends AppCompatActivity {
             editor.commit();
         }
     }
-    public void Timerset(int s,final TextView actualtime){
+    public void Timerset(long s,final TextView actualtime){
 
-        new CountDownTimer(s* 1000+1000, 1000) {
+        tim=new CountDownTimer(s* 1000+1000, 100) {
 
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
+            public void onTick(long msleft) {
+                int seconds = (int) (msleft / 1000);
                 int minutes = seconds / 60;
                 seconds = seconds % 60;
+                tl=msleft/1000;
+                Log.d("msleft","value: "+msleft);
+                int prog=(int)(msleft/100);
+                loadprog.setProgress(prog);
                 actualtime.setText("TIME : " + minutes
                         + ":" + seconds);
             }
 
             public void onFinish() {
-                actualtime.setText("Time's Up!");
-                score=0;
-                sz=1;
-                Toast.makeText(MainActivity3.this, "Time's Up!", Toast.LENGTH_SHORT).show();
-                gameoverdialog();
+                if(az==1) {
+                    actualtime.setText("Time's Up!");
+                    score = 0;
+                    sz = 1;
+                    Toast.makeText(MainActivity3.this, "Time's Up!", Toast.LENGTH_SHORT).show();
+                    gameoverdialog();
+                    tim.cancel();
+                }
             }
         }.start();
     }
@@ -153,12 +178,20 @@ public class MainActivity3 extends AppCompatActivity {
         wd=getIntent().getStringExtra("str2");
         prmpt=getIntent().getStringExtra("str3");
         md=getIntent().getIntExtra("int1",0);
-        timesec=getIntent().getIntExtra("int2",0);
+        timesec=getIntent().getLongExtra("int2",0);
+        loadprog=(ProgressBar)findViewById(R.id.loadprog);
+        if(nb==0)
+            tl=timesec;
+        Log.d("time","value: "+tl);
+        loadprog.setMax((int)(timesec*10));
+        loadprog.setProgress((int)(timesec-tl)*10);
         actualtimer=(TextView) findViewById(R.id.actualtimer);
         if(md==1)
-            Timerset(timesec,actualtimer);
-        else
+            Timerset(tl,actualtimer);
+        else {
             actualtimer.setVisibility(View.INVISIBLE);
+            loadprog.setVisibility(View.INVISIBLE);
+        }
         vib=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         final MediaPlayer ltrclk=MediaPlayer.create(this, R.raw.notif);
         final MediaPlayer rst=MediaPlayer.create(this, R.raw.resetsound);
@@ -213,9 +246,16 @@ public class MainActivity3 extends AppCompatActivity {
         );
             for (int i = 0; i < wd.length(); i++)
                 ans[i] = " _ ";
+            /*if(sd==1)
+                for(int xc=0;xc<ans.length;xc++)
+                    ans[xc]=ansfin[xc];
+            Arraycpy(ans);*/
             String answ = TextUtils.join("", ans);
             answer = (TextView) findViewById(R.id.answer);
+            /*if(jk==1)
+                 answ=answfin;*/
             answer.setText(answ);
+            /*Sendans(answ);*/
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,6 +263,13 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button1.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[0] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -240,6 +287,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button2.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[1] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -257,6 +313,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button3.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[2] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -274,6 +339,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button4.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[3] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -291,6 +365,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button5.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[4] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -308,6 +391,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button6.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[5] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -325,6 +417,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button7.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[6] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -342,6 +443,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button8.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[7] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -359,6 +469,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button9.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[8] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -376,6 +495,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button10.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[9] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -393,6 +521,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button11.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[10] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);
+                    String answ = TextUtils.join("", ans);
+                    if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
                     ltrclk.start();
@@ -410,7 +547,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button12.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[11] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);*/
                     String answ = TextUtils.join("", ans);
+                    /*if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     answer.setText(answ);
                     ltrclk.start();
                     vib.vibrate(100);
@@ -427,7 +572,14 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button13.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[12] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);*/
                     String answ = TextUtils.join("", ans);
+                    /*if(jk==1)
+                        answ=answfin;
+                    Sendans(answ);*/
                     answer.setText(answ);
                     ltrclk.start();
                     vib.vibrate(100);
@@ -444,7 +596,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button14.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[13] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);*/
                     String answ = TextUtils.join("", ans);
+                    /*if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     answer.setText(answ);
                     ltrclk.start();
                     vib.vibrate(100);
@@ -461,7 +621,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button15.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[14] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);*/
                     String answ = TextUtils.join("", ans);
+                    /*if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     answer.setText(answ);
                     ltrclk.start();
                     vib.vibrate(100);
@@ -478,7 +646,15 @@ public class MainActivity3 extends AppCompatActivity {
                 if(k<ans.length) {
                     button16.setBackgroundResource(R.drawable.clicked);
                     ans[k++] = " " + ch[15] + " ";
+                    /*if(sd==1)
+                        for(int xc=0;xc<ans.length;xc++)
+                            ans[xc]=ansfin[xc];
+                    Arraycpy(ans);*/
                     String answ = TextUtils.join("", ans);
+                    /*if(jk==1)
+                        answ=answfin;
+                    answer.setText(answ);
+                    Sendans(answ);*/
                     answer.setText(answ);
                     ltrclk.start();
                     vib.vibrate(100);
@@ -495,6 +671,10 @@ public class MainActivity3 extends AppCompatActivity {
                 for(int q=0;q<answ.length();q++)
                     if(Character.isAlphabetic(answ.charAt(q)))
                         answ1=answ1+answ.charAt(q);
+                /*if(sd==1)
+                    for(int xc=0;xc<ans.length;xc++)
+                        ans[xc]=ansfin[xc];
+                Arraycpy(ans);*/
                 if(ans[wd.length()-1].compareTo(" _ ")!=0) {
                     if (answ1.equalsIgnoreCase(wd)&&l<3) {
                         win.start();
@@ -554,7 +734,15 @@ public class MainActivity3 extends AppCompatActivity {
                         button16.setText(ch[15]+" ");
                         for (int c = 0; c < wd.length(); c++)
                             ans[c] = " _ ";
+                        /*if(sd==1)
+                            for(int xc=0;xc<ans.length;xc++)
+                                ans[xc]=ansfin[xc];
+                        Arraycpy(ans);*/
                         answ = TextUtils.join("", ans);
+                        /*if(jk==1)
+                            answ=answfin;
+                        answer.setText(answ);
+                        Sendans(answ);*/
                         answer.setText(answ);
                         k = 0;answ1="";
                     } else if (l == 1) {
@@ -609,7 +797,15 @@ public class MainActivity3 extends AppCompatActivity {
                         button16.setText(ch[15]+" ");
                         for (int c = 0; c < wd.length(); c++)
                             ans[c] = " _ ";
+                        /*if(sd==1)
+                            for(int xc=0;xc<ans.length;xc++)
+                                ans[xc]=ansfin[xc];
+                        Arraycpy(ans);*/
                         answ = TextUtils.join("", ans);
+                        /*if(jk==1)
+                            answ=answfin;
+                        answer.setText(answ);
+                        Sendans(answ);*/
                         answer.setText(answ);
                         k = 0;answ1="";
                     } else {
@@ -618,6 +814,7 @@ public class MainActivity3 extends AppCompatActivity {
                         Log.d("ADebugTag", "Value: " + Integer.toString(score));
                         life3.setBackgroundResource(R.drawable.yellowheart);
                         Toast.makeText(MainActivity3.this, "Wrong Answer!", Toast.LENGTH_SHORT).show();
+                        tim.cancel();
                         l++;
                         Updatescore();
                         gover.start();
@@ -677,14 +874,118 @@ public class MainActivity3 extends AppCompatActivity {
                     Toast.makeText(MainActivity3.this, "Answer has been reset!", Toast.LENGTH_SHORT).show();
                     for (int c = 0; c < wd.length(); c++)
                         ans[c] = " _ ";
+                    Arraycpy(ans);
                     String answ = TextUtils.join("", ans);
                     answer.setText(answ);
+                    Sendans(answ);
                     k = 0;answ1="";
                 }
             });
-        Log.d("outerscoretag", "Value: " + Integer.toString(score));
-
-
+        Log.d("outerscoretag", "Value: " + answ);
+        if (savedInstanceState != null) {
+            jk=1;
+            tim.cancel();
+            sd=1;nb=1;
+            tl=savedInstanceState.getLong("time");
+            Timerset(tl,actualtimer);
+            ansfin=savedInstanceState.getStringArray("answerarr");
+            answfin=savedInstanceState.getString("answer");
+            az=0;
+            Log.d("aftercall", "Value: " + answfin);
+            /*chk1=savedInstanceState.getInt("b1");
+            chk2=savedInstanceState.getInt("b2");
+            chk3=savedInstanceState.getInt("b3");
+            chk4=savedInstanceState.getInt("b4");
+            chk5=savedInstanceState.getInt("b5");
+            chk6=savedInstanceState.getInt("b6");
+            chk7=savedInstanceState.getInt("b7");
+            chk8=savedInstanceState.getInt("b8");
+            chk9=savedInstanceState.getInt("b9");
+            chk10=savedInstanceState.getInt("b10");
+            chk11=savedInstanceState.getInt("b11");
+            chk12=savedInstanceState.getInt("b12");
+            chk13=savedInstanceState.getInt("b13");
+            chk14=savedInstanceState.getInt("b14");
+            chk15=savedInstanceState.getInt("b15");
+            chk16=savedInstanceState.getInt("b16");*/
+            /*k=savedInstanceState.getInt("arrpos");*/
+            l = savedInstanceState.getInt("life");
+            answer.setText(answfin);
+            /*if(chk1==1)
+                button1.setBackgroundResource(R.drawable.clicked);
+            if(chk2==1)
+                button2.setBackgroundResource(R.drawable.clicked);
+            if(chk3==1)
+                button3.setBackgroundResource(R.drawable.clicked);
+            if(chk4==1)
+                button4.setBackgroundResource(R.drawable.clicked);
+            if(chk5==1)
+                button5.setBackgroundResource(R.drawable.clicked);
+            if(chk6==1)
+                button6.setBackgroundResource(R.drawable.clicked);
+            if(chk7==1)
+                button7.setBackgroundResource(R.drawable.clicked);
+            if(chk8==1)
+                button8.setBackgroundResource(R.drawable.clicked);
+            if(chk9==1)
+                button9.setBackgroundResource(R.drawable.clicked);
+            if(chk10==1)
+                button10.setBackgroundResource(R.drawable.clicked);
+            if(chk11==1)
+                button11.setBackgroundResource(R.drawable.clicked);
+            if(chk12==1)
+                button12.setBackgroundResource(R.drawable.clicked);
+            if(chk13==1)
+                button13.setBackgroundResource(R.drawable.clicked);
+            if(chk14==1)
+                button14.setBackgroundResource(R.drawable.clicked);
+            if(chk15==1)
+                button15.setBackgroundResource(R.drawable.clicked);
+            if(chk16==1)
+                button16.setBackgroundResource(R.drawable.clicked);*/
+            if(l==1) {
+                life1.setBackgroundResource(R.drawable.yellowheart);
+                score = 1000;
+            }
+            else if(l==2) {
+                life1.setBackgroundResource(R.drawable.yellowheart);
+                life2.setBackgroundResource(R.drawable.yellowheart);
+                score = 500;
+            }
+            else if(l==3) {
+                life1.setBackgroundResource(R.drawable.yellowheart);
+                life2.setBackgroundResource(R.drawable.yellowheart);
+                life3.setBackgroundResource(R.drawable.yellowheart);
+                score = 0;
+            }
         }
+        az=1;
+        }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        /*outState.putInt("arrpos",k);*/
+        outState.putStringArray("answerarr",ansfin);
+        /*outState.putInt("b1",chk1);
+        outState.putInt("b2",chk2);
+        outState.putInt("b3",chk3);
+        outState.putInt("b4",chk4);
+        outState.putInt("b5",chk5);
+        outState.putInt("b6",chk6);
+        outState.putInt("b7",chk7);
+        outState.putInt("b8",chk8);
+        outState.putInt("b9",chk9);
+        outState.putInt("b10",chk10);
+        outState.putInt("b11",chk11);
+        outState.putInt("b12",chk12);
+        outState.putInt("b13",chk13);
+        outState.putInt("b14",chk14);
+        outState.putInt("b15",chk15);
+        outState.putInt("b16",chk16);*/
+        outState.putInt("life",l);
+        outState.putLong("time",tl);
+        outState.putString("answer",answfin);
+        Log.d("answ1", "Value: " + answfin);
+    }
     }
 

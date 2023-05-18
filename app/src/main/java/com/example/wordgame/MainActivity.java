@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     char ch[]=new char[16];
-    int md=0,timesec;
+    int md=0;long timesec;
     String wd="";
     String prmpt="";
     EditText inputWord; TextView hiscore;
@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ltsgo.start();
-                timesec=Integer.parseInt(gettimebox.getText().toString());
+                timesec=Long.parseLong(gettimebox.getText().toString());
                 Bundle bundle=new Bundle();
                 bundle.putCharArray("str1",ch);
                 bundle.putString("str2",wd);
                 bundle.putString("str3",prmpt);
                 bundle.putInt("int1",md);
-                bundle.putInt("int2",timesec);
+                bundle.putLong("int2",timesec);
                 Intent i=new Intent(MainActivity.this,MainActivity3.class);
                 i.putExtra("str1",ch);
                 i.putExtra("str2",wd);
