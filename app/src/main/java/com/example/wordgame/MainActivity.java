@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -39,22 +40,26 @@ public class MainActivity extends AppCompatActivity {
         start1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ltsgo.start();
-                timesec=Long.parseLong(gettimebox.getText().toString());
-                Bundle bundle=new Bundle();
-                bundle.putCharArray("str1",ch);
-                bundle.putString("str2",wd);
-                bundle.putString("str3",prmpt);
-                bundle.putInt("int1",md);
-                bundle.putLong("int2",timesec);
-                Intent i=new Intent(MainActivity.this,MainActivity3.class);
-                i.putExtra("str1",ch);
-                i.putExtra("str2",wd);
-                i.putExtra("str3",prmpt);
-                i.putExtra("int1",md);
-                i.putExtra("int2",timesec);
+                if (TextUtils.isEmpty(gettimebox.getText().toString()))
+                    Toast.makeText(MainActivity.this, "Enter the time in seconds", Toast.LENGTH_SHORT).show();
+                else {
+                    ltsgo.start();
+                    timesec = Long.parseLong(gettimebox.getText().toString());
+                Bundle bundle = new Bundle();
+                bundle.putCharArray("str1", ch);
+                bundle.putString("str2", wd);
+                bundle.putString("str3", prmpt);
+                bundle.putInt("int1", md);
+                bundle.putLong("int2", timesec);
+                Intent i = new Intent(MainActivity.this, MainActivity3.class);
+                i.putExtra("str1", ch);
+                i.putExtra("str2", wd);
+                i.putExtra("str3", prmpt);
+                i.putExtra("int1", md);
+                i.putExtra("int2", timesec);
                 startActivity(i);
                 dialog1.dismiss();
+            }
             }
         });
         dialog1.show();
