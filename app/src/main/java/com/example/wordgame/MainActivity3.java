@@ -814,6 +814,7 @@ public class MainActivity3 extends AppCompatActivity {
                         Log.d("ADebugTag", "Value: " + Integer.toString(score));
                         life3.setBackgroundResource(R.drawable.yellowheart);
                         Toast.makeText(MainActivity3.this, "Wrong Answer!", Toast.LENGTH_SHORT).show();
+                        if(md==1)
                         tim.cancel();
                         l++;
                         Updatescore();
@@ -883,11 +884,14 @@ public class MainActivity3 extends AppCompatActivity {
             });
         Log.d("outerscoretag", "Value: " + answ);
         if (savedInstanceState != null) {
-            jk=1;
-            tim.cancel();
+            jk = 1;
+            if (md == 1)
+            {
+                tim.cancel();
+            tl = savedInstanceState.getLong("time");
+            Timerset(tl, actualtimer);
+        }
             sd=1;nb=1;
-            tl=savedInstanceState.getLong("time");
-            Timerset(tl,actualtimer);
             ansfin=savedInstanceState.getStringArray("answerarr");
             answfin=savedInstanceState.getString("answer");
             az=0;
