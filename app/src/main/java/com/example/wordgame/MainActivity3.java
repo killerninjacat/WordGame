@@ -60,7 +60,7 @@ public class MainActivity3 extends AppCompatActivity {
         }
     }
     public void Timerset(long s,final TextView actualtime){
-        tim=new CountDownTimer(s* 1000+1000, 100) {
+        tim=new CountDownTimer(s* 1000, 100) {
 
             public void onTick(long msleft) {
                 int seconds = (int) (msleft / 1000);
