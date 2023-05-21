@@ -68,7 +68,7 @@ public class MainActivity3 extends AppCompatActivity {
                 seconds = seconds % 60;
                 tl=msleft/1000;
                 if(s==timesec)
-                az=1;
+                   az=1;
                 int prog=(int)(msleft/100);
                 loadprog.setProgress(prog);
                 actualtime.setText("TIME : " + minutes

@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 prmpt = inputPrompt.getText().toString();
                 wd = inputWord.getText().toString();
+                wd=wd.trim();
                 if (wd.length() != 0 && wd.length() <= 16) {
                     Modeselector();
                     vibr.vibrate(200);
