@@ -157,8 +157,8 @@
 
     <TextView
         android:id="@+id/hiscore"
-        android:layout_width="250dp"
-        android:layout_height="43dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="45dp"
         android:background="@drawable/highscore"
         android:shadowColor="#FF0000"

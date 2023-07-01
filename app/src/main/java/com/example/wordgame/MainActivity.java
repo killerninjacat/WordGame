@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         vibr=(Vibrator)getSystemService(VIBRATOR_SERVICE);
         SharedPreferences settings = getApplicationContext().getSharedPreferences("com.example.wordgame", 0);
         int bestscore = settings.getInt("scoreget", 0);
-        hiscore.setText(" HIGHSCORE: "+bestscore+" ");
+        hiscore.setText("  HIGHSCORE: "+bestscore+"  ");
         startGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
