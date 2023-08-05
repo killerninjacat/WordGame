@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     ltsgo.start();
                     timesec = Long.parseLong(gettimebox.getText().toString());
-                Bundle bundle = new Bundle();
+               /* Bundle bundle = new Bundle();
                 bundle.putCharArray("str1", ch);
                 bundle.putString("str2", wd);
                 bundle.putString("str3", prmpt);
                 bundle.putInt("int1", md);
-                bundle.putLong("int2", timesec);
+                bundle.putLong("int2", timesec);*/
                 Intent i = new Intent(MainActivity.this, MainActivity3.class);
                 i.putExtra("str1", ch);
                 i.putExtra("str2", wd);
@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
                 strt.start();
                 md=0;
                 dialog.dismiss();
-                Bundle bundle=new Bundle();
+                /*Bundle bundle=new Bundle();
                 bundle.putCharArray("str1",ch);
                 bundle.putString("str2",wd);
                 bundle.putString("str3",prmpt);
-                bundle.putInt("int1",md);
+                bundle.putInt("int1",md);*/
                 Intent i=new Intent(MainActivity.this,MainActivity3.class);
                 i.putExtra("str1",ch);
                 i.putExtra("str2",wd);
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         inputPrompt=(EditText) findViewById(R.id.inputPrompt);
         startGame=(Button) findViewById(R.id.startGame);
         vibr=(Vibrator)getSystemService(VIBRATOR_SERVICE);
-        SharedPreferences settings = getApplicationContext().getSharedPreferences("com.example.wordgame", 0);
+        SharedPreferences settings = getSharedPreferences("com.example.wordgame", 0);
         int bestscore = settings.getInt("scoreget", 0);
         hiscore.setText("  HIGHSCORE: "+bestscore+"  ");
         startGame.setOnClickListener(new View.OnClickListener() {
